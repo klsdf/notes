@@ -1,7 +1,5 @@
 # HTML基础
 
-## 发展史
-
 ## 基本结构
 
 ```html
@@ -31,7 +29,9 @@ HTML标签是HTML的基本组成,一般由一对<>组成,比如`<p>hello world</
 
 HTML文档从`<html>`开始,在`</html>`结束,这里面包裹的内容就是HTML文档,文档头由`<head>`定义,而文档主体由`<body>`定义.
 
+## 说明
 
+本文不会收录所有的标签以及属性,只会挑选最为常用的和实用的,以便快速查找复习.
 
 # 文档相关标签
 
@@ -49,6 +49,8 @@ HTML文档从`<html>`开始,在`</html>`结束,这里面包裹的内容就是HTM
 
 
 ## html
+
+标志文档起点与终点
 
 ## meta
 
@@ -102,9 +104,19 @@ mtea可以提供有关页面的元信息,就是说,可以给搜索引擎提供�
 <a href="超链接连接的网址">a标签是一个超链接</a>
 ```
 
+## link
+
+一般常用于引用外部样式,或者JavaScript文件.
+
+```html
+<link rel="stylesheet" type="text/css" href="引用的路径" />
+```
+
 # 列表
 
 ## ul,li
+
+无序列表
 
 ```html
 <ul>
@@ -114,7 +126,11 @@ mtea可以提供有关页面的元信息,就是说,可以给搜索引擎提供�
 </ul>
 ```
 
-
+<ul>
+  <li>我</li>
+  <li>是</li>
+  <li>无序列表</li>
+</ul>
 
 ## ol,li
 
@@ -127,31 +143,17 @@ mtea可以提供有关页面的元信息,就是说,可以给搜索引擎提供�
   <li>有序列表</li>
 </ol>
 ```
-
-指定序号起点
-
-```html
-<ol start="50">
-  <li>而且</li>
-  <li>可以</li>
-  <li>指定序号</li>
-</ol>
-```
-
-倒序表示
-
-```html
-<ol reversed="reversed">
+<ol>
   <li>我</li>
   <li>是</li>
-  <li>倒序列表</li>
+  <li>有序列表</li>
 </ol>
-```
 
-
-
-
-
+| 属性     | 值       | 描述                                                         |
+| -------- | -------- | --------------------------------- |
+| reversed | reversed | 规定列表顺序为降序。\(9,8,7\.\.\.\) |
+| start    | 数字 | 规定有序列表的起始值。 |
+| type     |1 A a I i  | 规定在列表中使用的标记类型。    |
 
 ## dl,dt,dd
 
@@ -164,7 +166,12 @@ mtea可以提供有关页面的元信息,就是说,可以给搜索引擎提供�
 </dl>
 ```
 
-
+<dl>
+  <dt>定义列表</dt>
+  <dd>是专门写定义的列表,如下</dd>
+  <dt>定义:</dt>
+  <dd>我是内容</dd>
+</dl>
 
 # 表单
 
@@ -196,8 +203,6 @@ mtea可以提供有关页面的元信息,就是说,可以给搜索引擎提供�
 </form>
 ```
 
-
-
 ## button
 
 ```html
@@ -206,15 +211,14 @@ mtea可以提供有关页面的元信息,就是说,可以给搜索引擎提供�
 
 ## select,optgroup,option 
 
-```html
-select定义选择列表（下拉列表）,option就是里面的选项，optgroup则是选项的分组<br>
+select定义选择列表（下拉列表）,option就是里面的选项，optgroup则是选项的分组
 
+```html
 <select>
   <optgroup label="我是optgroup,我是第一组选项">
 	<option value ="被送去服务器的值">option1</option>
 	<option>选项2</option>
   </optgroup>
-
   <optgroup label="我也是optgroup,我是第二组选项">
 	<option>option3</option>
 	<option>选项4</option>
@@ -222,14 +226,32 @@ select定义选择列表（下拉列表）,option就是里面的选项，optgrou
 </select>
 ```
 
-
+<select>
+  <optgroup label="我是optgroup,我是第一组选项">
+	<option value ="被送去服务器的值">option1</option>
+	<option>选项2</option>
+  </optgroup>
+  <optgroup label="我也是optgroup,我是第二组选项">
+	<option>option3</option>
+	<option>选项4</option>
+  </optgroup>
+</select>
 
 # 表格
 
-## table,td,tr
+## table,td,tr,th
+
+table用于定义表格,tr表示这是一行,td表示是一个元素.有几个tr就有几行,一个tr里面几个td就代表这行有几列.
+
+要注意的是,第一行一般都是表格的头,所以用th修饰
 
 ```html
-<table border="1">
+<table>
+  <tr>
+    <th>th表示表格头</td>
+    <th>我也是表头</td>
+    <th>我也是</td>
+  </tr>
   <tr>
     <td>table表示一个表格，里面虽然啥都没有，但是可以放表格标签</td>
     <td>一个tr就用来表示一行表格</td>
@@ -241,9 +263,308 @@ select定义选择列表（下拉列表）,option就是里面的选项，optgrou
 </table>
 ```
 
+<table>
+  <tr>
+    <th>th表示表格头</td>
+    <th>我也是表头</td>
+    <th>我也是</td>
+  </tr>
+  <tr>
+    <td>table表示一个表格，里面虽然啥都没有，但是可以放表格标签</td>
+    <td>一个tr就用来表示一行表格</td>
+    <td>td就表示每个单元格</td>
+  </tr>
+  <tr>
+    <td>我是第2个tr，表示第二行</td>
+  </tr>
+</table>
+**注意:!!!!!!表格默认是没有边框的,这个之所以有,是因为typora自动给我加了样式.**
+
+table的属性:
+
+<table>
+	<tbody>
+		<tr>
+			<th style="width:20%;">属性</th>
+			<th style="width:20%;">值</th>
+			<th style="width:60%;">描述</th>
+		</tr>
+		<tr>
+			<td>border</td>
+			<td><i>pixels</i></td>
+			<td>规定表格边框的宽度。</td>
+		</tr>
+		<tr>
+			<td>cellpadding</td>
+			<td>
+				<ul>
+					<li><i>pixels</i></li>
+					<li><i>%</i></li>
+				</ul>
+			</td>
+			<td>就是表格文字和格子边框的距离</td>
+		</tr>
+		<tr>
+			<td>cellspacing</td>
+			<td>
+				<ul>
+					<li><i>pixels</i></li>
+					<li><i>%</i></li>
+				</ul>
+			</td>
+			<td>每个单元格之间的距离</td>
+		</tr>
+		<tr>
+			<td>frame</td>
+			<td>
+				<ul>
+					<li>void</li>
+					<li>above</li>
+					<li>below</li>
+					<li>hsides</li>
+					<li>lhs</li>
+					<li>rhs</li>
+					<li>vsides</li>
+					<li>box</li>
+					<li>border</li>
+				</ul>
+			</td>
+			<td>规定外侧边框的哪个部分是可见的。</td>
+		</tr>
+		<tr>
+			<td>rules</td>
+			<td>
+				<ul>
+					<li>none</li>
+					<li>groups</li>
+					<li>rows</li>
+					<li>cols</li>
+					<li>all</li>
+				</ul>
+			</td>
+			<td>规定内侧边框的哪个部分是可见的。</td>
+		</tr>
+		<tr>
+			<td>width</td>
+			<td>
+				<ul>
+					<li><i>%</i></li>
+					<li><i>pixels</i></li>
+				</ul>
+			</td>
+			<td>规定表格的宽度。</td>
+		</tr>
+	</tbody>
+</table>
 
 
-# 文本标签
+td,th的属性
+
+<table>
+	<tbody>
+		<tr>
+			<th style="width:20%;">属性</th>
+			<th style="width:20%;">值</th>
+			<th style="width:60%;">描述</th>
+		</tr>
+		<tr>
+			<td>align</td>
+			<td>
+				<ul>
+					<li>left</li>
+					<li>right</li>
+					<li>center</li>
+					<li>justify</li>
+					<li>char</li>
+				</ul>
+			</td>
+			<td>规定单元格内容的水平对齐方式。</td>
+		</tr>
+		<tr>
+			<td>axis</td>
+			<td><i>category_name</i></td>
+			<td>对单元格进行分类。</td>
+		</tr>
+		<tr>
+			<td>char</td>
+			<td><i>character</i></td>
+			<td>规定根据哪个字符来进行内容的对齐。</td>
+		</tr>
+		<tr>
+			<td>charoff</td>
+			<td><i>number</i></td>
+			<td>规定对齐字符的偏移量。</td>
+		</tr>
+		<tr>
+			<td>colspan</td>
+			<td><i>number</i></td>
+			<td>设置单元格可横跨的列数。</td>
+		</tr>
+		<tr>
+			<td>headers</td>
+			<td><i>idrefs</i></td>
+			<td>由空格分隔的表头单元格 ID 列表，为数据单元格提供表头信息。</td>
+		</tr>
+		<tr>
+			<td>rowspan</td>
+			<td><i>number</i></td>
+			<td>规定单元格可横跨的行数。</td>
+		</tr>
+		<tr>
+			<td>scope</td>
+			<td>
+				<ul>
+					<li>col</li>
+					<li>colgroup</li>
+					<li>row</li>
+					<li>rowgroup</li>
+				</ul>
+			</td>
+			<td>定义将表头数据与单元数据相关联的方法。</td>
+		</tr>
+		<tr>
+			<td>valign</td>
+			<td>
+				<ul>
+					<li>top</li>
+					<li>middle</li>
+					<li>bottom</li>
+					<li>baseline</li>
+				</ul>
+			</td>
+			<td>规定单元格内容的垂直排列方式。</td>
+		</tr>
+	</tbody>
+</table>
+
+## thead,tbody,tfoot
+
+刚才那个表格其实不是完整版的,虽然也能用.但是实际开发中,能多严谨就要多严谨.
+
+- thead用于表示表头
+- tbody表示表格主题内容
+- tfoot用于总结表的内容,当然你也随便写点啥
+- **注意:这三个的顺序是thead,tfoot,tbody**
+
+```html
+<table>
+	<thead>
+		<tr>
+			<th>妹子</th>
+			<th>特征</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<th>总体评价</th>
+			<th>都是我老婆</th>
+		</tr>
+	</tfoot>
+	<tbody>
+		<tr>
+			<td>牛顿</td>
+			<td>金毛双马尾</td>
+		</tr>
+		<tr>
+			<td>哈雷</td>
+			<td>大胸软萌</td>
+		</tr>
+		<tr>
+			<td>拉瓦锡</td>
+			<td>腹黑</td>
+		</tr>
+	</tbody>
+</table>
+```
+
+
+
+<table>
+	<thead>
+		<tr>
+			<th>妹子</th>
+			<th>特征</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<th>总体评价</th>
+			<th>都是我老婆</th>
+		</tr>
+	</tfoot>
+	<tbody>
+		<tr>
+			<td>牛顿</td>
+			<td>金毛双马尾</td>
+		</tr>
+		<tr>
+			<td>哈雷</td>
+			<td>大胸软萌</td>
+		</tr>
+		<tr>
+			<td>拉瓦锡</td>
+			<td>腹黑</td>
+		</tr>
+	</tbody>
+</table>
+
+## caption
+
+表示表格的标题
+
+```html
+<table>
+  <caption>牛顿与苹果树鉴赏表</caption>
+	<thead>
+		<tr>
+			<th>妹子</th>
+			<th>特征</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>牛顿</td>
+			<td>金毛双马尾</td>
+		</tr>
+		<tr>
+			<td>哈雷</td>
+			<td>大胸软萌</td>
+		</tr>
+		<tr>
+			<td>拉瓦锡</td>
+			<td>腹黑</td>
+		</tr>
+	</tbody>
+</table>
+```
+
+<table>
+  <caption>牛顿与苹果树鉴赏表</caption>
+	<thead>
+		<tr>
+			<th>妹子</th>
+			<th>特征</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>牛顿</td>
+			<td>金毛双马尾</td>
+		</tr>
+		<tr>
+			<td>哈雷</td>
+			<td>大胸软萌</td>
+		</tr>
+		<tr>
+			<td>拉瓦锡</td>
+			<td>腹黑</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+# 文本
 
 ## abbr
 
@@ -277,7 +598,7 @@ blockquote是一个长引用，
 <cite>cite语义表示引用，可以表示书名，电影什么的，表现为斜体</cite>
 ```
 
-
+<cite>cite语义表示引用，可以表示书名，电影什么的，表现为斜体</cite>
 
 ## ruby，rt，rb
 
@@ -291,7 +612,9 @@ rp标签在 ruby 注释中使用，以定义不支持 ruby 元素的浏览器所
 我是<ruby>注音<rt><rp>(</rp>zhù yīn<rp>)</rp></rt></ruby>
 ```
 
-
+ruby用来表示<ruby>注<rt>zhù</rt></ruby><ruby>音<rt>yīn</rt></ruby>。
+		ruby里面表示要注音的内容，rt里面表示拼音,若浏览器不支持，就需要用rp了，rp标签在 ruby 注释中使用，以定义不支持 ruby 元素的浏览器所显示的内容。
+		我是<ruby>注音<rt><rp>(</rp>zhù yīn<rp>)</rp></rt></ruby>.
 
 ## ins
 
@@ -299,7 +622,7 @@ rp标签在 ruby 注释中使用，以定义不支持 ruby 元素的浏览器所
 <ins>这个表示下划线，填空题经常会看到</ins>
 ```
 
-
+<ins>这个表示下划线，填空题经常会看到</ins>
 
 ## del
 
@@ -307,7 +630,7 @@ rp标签在 ruby 注释中使用，以定义不支持 ruby 元素的浏览器所
 <del>del里面的内容会被加入删除线，语义上就是删掉的内容</del>
 ```
 
-
+<del>del里面的内容会被加入删除线，语义上就是删掉的内容</del>
 
 ## em
 
@@ -315,7 +638,7 @@ rp标签在 ruby 注释中使用，以定义不支持 ruby 元素的浏览器所
 <em>em语义上表示强调语气，表现为斜体</em>
 ```
 
-
+<em>em语义上表示强调语气，表现为斜体</em>
 
 ## pre
 
@@ -331,47 +654,74 @@ int main()
 </pre>
 ```
 
-
+<pre>
+pre 元素可定义预格式化的文本。被包围在 pre 元素中的文本通常会保留空格和换行符。而文本也会呈现为等宽字体。
+说白了就是，pre里面怎么写，浏览器就怎么显示，因为一般浏览器会忽略多个回车和空格
+int main()
+{
+	return 0;
+}
+但是注意标签不能放进去,有的不会显示
+</pre>
 
 ## q
 
 ```html
 <q>q标签表示短引用，一般语义上表示说话之类的，表现为在标签里面的内容，自动被加了双引号 </q>
-<p>比如说，子曰<q>知之为知之。</q></p>
+<p>比如说，子曰:<q>知之为知之。</q></p>
 <p>这个引号并不是HTML加的，所以鼠标也不能选中</p>
 ```
 
+<q>q标签表示短引用，一般语义上表示说话之类的，表现为在标签里面的内容，自动被加了双引号 </q>
 
+<p>比如说，子曰:<q>知之为知之。</q></p>
+<p>这个引号并不是HTML加的，所以鼠标也不能选中</p>
 
 ## strong
 
 ```html
-<p>
-	<strong>strong表示强烈强调，语气上非常激动，表现为黑体</strong>
-</p>
+<strong>strong表示强烈强调，语气上非常激动，表现为黑体</strong>
 ```
 
-
+<strong>strong表示强烈强调，语气上非常激动，表现为黑体</strong>
 
 ## sub
 
 ```html
-<p>
-  sub表示 <sub>下标</sub>，经常用于x<sub>1</sub>之类的数学符号
-</p>
+sub表示 <sub>下标</sub>，经常用于x<sub>1</sub>之类的数学符号
 ```
 
-
+sub表示 <sub>下标</sub>，经常用于x<sub>1</sub>之类的数学符号
 
 ## sup
 
 ```html
-<p>
-  sup可以用来表示 <sup>上标</sup>,最常见就是y=x<sup>2</sup>
-</p>
+sup可以用来表示 <sup>上标</sup>,最常见就是y=x<sup>2</sup>
 ```
 
+sup可以用来表示 <sup>上标</sup>,最常见就是y=x<sup>2</sup>
 
 
 
+# HTML的全局属性
 
+就是说所有html元素都具有这些属性,可以随便用.
+
+| 属性            | 描述                                                   |
+| --------------- | ------------------------------------------------------ |
+| accesskey       | 规定激活元素的快捷键。                                 |
+| class           | 规定元素的一个或多个类名（引用样式表中的类）。         |
+| contenteditable | 规定元素内容是否可编辑。                               |
+| contextmenu     | 规定元素的上下文菜单。上下文菜单在用户点击元素时显示。 |
+| data\-\*        | 用于存储页面或应用程序的私有定制数据。                 |
+| dir             | 规定元素中内容的文本方向。                             |
+| draggable       | 规定元素是否可拖动。                                   |
+| dropzone        | 规定在拖动被拖动数据时是否进行复制、移动或链接。       |
+| hidden          | 规定元素仍未或不再相关。                               |
+| id              | 规定元素的唯一 id。                                    |
+| lang            | 规定元素内容的语言。                                   |
+| spellcheck      | 规定是否对元素进行拼写和语法检查。                     |
+| style           | 规定元素的行内 CSS 样式。                              |
+| tabindex        | 规定元素的 tab 键次序。                                |
+| title           | 规定有关元素的额外信息。                               |
+| translate       | 规定是否应该翻译元素内容。                             |

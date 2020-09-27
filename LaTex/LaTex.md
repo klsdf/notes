@@ -57,8 +57,38 @@ LaTex文章的内容从`\begin{document}`开始,在`\end{document}`结束,前面
 
 ## 文档类型
 
+latex有四种文档类型,分别为
+
+1. article:支持part，section，subsection 等，但没有 chapter，可以有摘要，摘要紧接标题头位于第一页上。
+2. report:可以有 part，chapter，section，subsection 等，也有摘要，且摘要位于单独一页上，有页码。
+3. book:可以有 part，chapter，section，subsection 等，但没有摘要。
+4. beamer:做PPT用的
+
+但是很麻烦的一点就是这四个标准文档类型都不支持中文,为了让广大中国同志们也能使用,官方又出了四个的中文文档类.分别对应上面的四个标准文档类.
+
+1. ctexart
+2. ctexrep
+3. ctexbook
+4. ctexbeamer
+
+我们在使用这些文档类的时候,只需要引用即可.
+
 ```latex
 \documentclass{ctexart}
+
+\documentclass{ctexrep}
+
+\documentclass{ctexbook}
+
+\documentclass{ctexbeamer}
+```
+
+## 支持中文文档
+
+我们选用的ctexart自带中文支持,但是如果你选用的其他文档类型不支持中文,记得引用宏包.有的时候,中文文档可能会导致bug,只能添加宏包.
+
+```latex
+\usepackage{ctex}
 ```
 
 ## 文档标题
@@ -97,14 +127,18 @@ LaTex文章的内容从`\begin{document}`开始,在`\end{document}`结束,前面
 
 # 文档内容
 
-## 文档结构
+## 标准文档结构
 
-latex分为多级标题,可以用代码简单设置,编译器会自动帮你排序,很方便.
+latex分为多级标题,可以用代码简单设置,编译器会自动帮你排序,很方便.但是要注意,下面这些并不是所有文档类型都支持的,使用前建议查看一下当前文档类支持哪些标题.
 
 ```latex
+\part{部分}
+\chapter{章节}
 \section{一级标题}
 \subsection{二级标题} 
-\subsubsection{二级标题}
+\subsubsection{三级标题}
+\paragraph{段落}
+\subparagraph{子段落}
 ```
 
 这个标题默认居中,如果不想居中可以设置左对齐,同样的,记住有关设置的都要放在`\begin{document}`之前.
@@ -116,6 +150,119 @@ section = {
     format = \raggedright\Large\bfseries,
     }
 }
+```
+
+## 自定义文档结构
+
+虽然latex给的默认结构已经足够多了,但是个别情况下还是存在不够用的情况,比如说想要四级标题和五级标题.那么就得自己自定义了.
+
+**注意!!!!!本语法不支持中文文档,请使用英文文档,之后再加入ctex宏包.**
+
+```latex
+\documentclass{book}
+\usepackage{ctex}
+```
+
+
+
+```latex
+%请在\begin{document}之前把下面的代码粘过去
+
+%使用宏包expl3
+\usepackage{expl3}
+
+\makeatletter
+\renewcommand\subparagraph{
+  \@startsection{subparagraph}{5}{\z@}
+    {-3.25ex \@plus1ex \@minus .2ex}
+    {1em}
+    {\normalfont\normalsize\bfseries}}
+
+\ExplSyntaxOn
+\int_new:N \l_sec_offset_int
+\newcommand\setXsecOffset[1]{ \int_set:Nn \l_sec_offset_int {#1} }
+\newcommand\addXsecOffset[1]{ \int_add:Nn \l_sec_offset_int {#1} }
+
+\newcommand\xsection[1]{
+  \xsection:x { \int_eval:n {#1 + \l_sec_offset_int} }
+}
+
+\cs_new:Nn \xsection:n
+  {
+    \int_case:nnF {#1}
+      {
+        {-1}{\part}
+        {0}{\chapter}
+        {1}{\section}
+        {2}{\subsection}
+        {3}{\subsubsection}
+        {4}{\paragraph}
+        {5}{\subparagraph}
+      }
+      {
+        \int_compare:nTF {#1 <= \l_sec_maxdp_int}
+          {
+            \@startsection{xsec #1}{#1}{\z@}
+              {-3.25ex \@plus1ex \@minus .2ex}
+              {1em}
+              {\normalfont\normalsize\bfseries}
+          }
+          {
+            \PackageError{PATCH}{Too~ deep~ sectioning~ command~ used.}{}
+          }
+      }
+  }
+\cs_generate_variant:Nn \xsection:n {x}
+
+\int_new:N \l_sec_maxdp_int
+\int_set:Nn \l_sec_maxdp_int {5}
+
+\newcommand\extendSectionLevelTo[1]{
+  \int_step_inline:nnn {\l_sec_maxdp_int + 1} {#1}
+    {
+      \newcounter{xsec ##1}
+      \int_compare:nTF {##1 = \l_sec_maxdp_int + 1}
+        { \counterwithin{xsec ##1}{subparagraph} }
+        { \counterwithin{xsec ##1}{xsec \int_eval:n{##1 - 1}} }
+      \@namedef{xsec ##1 mark}{\@gobble}
+    }
+  \int_set:Nn \l_sec_maxdp_int {#1}
+  \setcounter{secnumdepth}{#1}
+}
+\ExplSyntaxOff
+\makeatother
+```
+
+下面的使用方法:
+
+```latex
+\begin{document}
+%自己添加最大标题数量
+\extendSectionLevelTo{10}
+
+\part{部分}
+\chapter{章节}
+\section{一级标题}
+\subsection{二级标题} 
+\subsubsection{三级标题}
+\paragraph{段落}
+\subparagraph{子段落}
+
+\xsection{6}{title}
+\xsection{7}{title}
+\xsection{8}{title}
+\xsection{9}{title}
+\xsection{10}{title}
+
+%重置标题深度
+\addXsecOffset{1}
+\xsection{1}{title}
+\xsection{2}{title}
+
+\setXsecOffset{0}
+\xsection{1}{title}
+\xsection{2}{title}
+\end{document}
 ```
 
 
@@ -276,6 +423,7 @@ $\mathbb{R}$  $\mathcal{R}$  $\mathscr{R}$
   =&181.224
 \end{tabular}
 ```
+
 ![image-20200906231636552](F:\0笔记\LaTex\img\image-20200906231636552.png)
 
 ### 除法竖式
@@ -297,31 +445,122 @@ $\mathbb{R}$  $\mathcal{R}$  $\mathscr{R}$
 
 
 
+## 多行公式
+
+### 多行公式
+
+自带序号
+
+```latex
+\begin{gather}
+a+b=b+a\\
+ab=ba
+\end{gather}
+```
+
+$$
+\begin{gather}
+  a+b=b+a\\
+  ab=ba
+  \end{gather}
+$$
+
+如果不想要序号可以使用gather*
+
+```latex
+\begin{gather*}
+a+b=b+a\\
+ab=ba
+\end{gather*}
+```
+
+如果只想要个别有序号,可以指定notag
+
+```latex
+\begin{gather}
+a+b=b+a \notag\\
+ab=ba
+\end{gather}
+```
+
+## 一个公式写成多行
+
+```latex
+\begin{equation*}
+\begin{split}
+\cos2x&=\cos^2x-\sin^2x\\
+&=2\cos^2x-1
+\end{split}
+\end{equation*}
+```
+$$
+\begin{equation*}
+  \begin{split}
+  \cos2x&=\cos^2x-\sin^2x\\
+  &=2\cos^2x-1
+  \end{split}
+  \end{equation*}
+$$
+
+## 分段函数
+
+```latex
+\begin{equation*}
+D(x)=\begin{cases}
+1,&\text{如果} x \in \mathbb{Q};\\
+0,&\text{如果} x \in \mathbb{R} \setminus \mathbb{Q}.
+\end{cases}
+\end{equation*}
+```
+
+$$
+\begin{equation*}
+D(x)=\begin{cases}
+1,&\text{如果} x \in \mathbb{Q};\\
+0,&\text{如果} x \in \mathbb{R} \setminus \mathbb{Q}.
+\end{cases}
+\end{equation*}
+$$
+
+
+
 ## 矩阵
 
 ### 圆形矩阵
 
 ```latex
 \begin{pmatrix}
-    1 & 0 & 0\\\\
-    0 & 1 & 0\\\\
-    0 & 0 & 1\\\\
+    1 & 0 & 0\\
+    0 & 1 & 0\\
+    0 & 0 & 1\\
 \end{pmatrix}
 ```
 
-![image-20200907230815403](img/image-20200907230815403.png)
+$$
+\begin{pmatrix}
+    1 & 0 & 0\\
+    0 & 1 & 0\\
+    0 & 0 & 1\\
+\end{pmatrix}
+$$
 
 ### 方形矩阵
 
 ```latex
 \begin{bmatrix}
-    1 & 0 & 0\\\\
-    0 & 1 & 0\\\\
-    0 & 0 & 1\\\\
+    1 & 0 & 0\\
+    0 & 1 & 0\\
+    0 & 0 & 1\\
 \end{bmatrix}
 ```
 
-![image-20200907230904135](img/image-20200907230904135.png)
+$$
+\begin{bmatrix}
+    1 & 0 & 0\\
+    0 & 1 & 0\\
+    0 & 0 & 1\\
+\end{bmatrix}
+$$
 
 
 
@@ -329,27 +568,43 @@ $\mathbb{R}$  $\mathcal{R}$  $\mathscr{R}$
 
 ```latex
 \begin{vmatrix}
-    1 & 0 & 0\\\\
-    0 & 1 & 0\\\\
-    0 & 0 & 1\\\\
+    1 & 0 & 0\\
+    0 & 1 & 0\\
+    0 & 0 & 1\\
 \end{vmatrix}
 ```
 
-![image-20200907230936272](img/image-20200907230936272.png)
+$$
+\begin{vmatrix}
+    1 & 0 & 0\\
+    0 & 1 & 0\\
+    0 & 0 & 1\\
+\end{vmatrix}
+$$
+
+
 
 ### 复杂矩阵
 
 ```latex
-$$A = 
+A = 
     \begin{pmatrix}
         a_{11} & a_{12} & \cdots & a_{1n}\\
         a_{21} & a_{22} & \cdots & a_{2n}\\
         \vdots & \vdots & \ddots & \vdots\\
         a_{n1} & a_{n2} & \cdots & a_{nn}\\
-    \end{pmatrix}$$
+    \end{pmatrix}
 ```
 
-
+$$
+A = 
+    \begin{pmatrix}
+        a_{11} & a_{12} & \cdots & a_{1n}\\
+        a_{21} & a_{22} & \cdots & a_{2n}\\
+        \vdots & \vdots & \ddots & \vdots\\
+        a_{n1} & a_{n2} & \cdots & a_{nn}\\
+    \end{pmatrix}
+$$
 
 ## 数理逻辑
 
@@ -404,7 +659,7 @@ $\bar{q} \to p$
 | \psi     | $\psi$   | \Psi | $\Psi$ |
 | \omega   | $\omega$ | \Omega  | $\Omega$ |
 
-## 常用数学符号
+## 比较运算符
 
 | 代码        | 符号        | 含义     |
 | ----------- | ----------- | -------- |
@@ -412,6 +667,14 @@ $\bar{q} \to p$
 | \leqslant   | $\leqslant$ | 小于等于 |
 | \ge 或 \geq | $\ge$       | 大于等于 |
 | \geqslant   | $\geqslant$ | 大于等于 |
+
+## 常用运算符
+
+|      |             |      |
+| ---- | ----------- | ---- |
+| \%   | $\%$        | 模   |
+| \mod | $ 3 \mod 4$ | 模   |
+|      |             |      |
 
 
 
@@ -504,5 +767,5 @@ $\bar{q} \to p$
 
 
 
-# 2020/6/11
+# 闫辰祥2020/6/11
 
