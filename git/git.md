@@ -1,7 +1,5 @@
 # GIT简介
 
-# GIT基础
-
 # 连接GitHub流程
 
 ## 0. 配置
@@ -41,7 +39,7 @@ git commit -m "代码提交信息"
 若之前这个本地仓库已经连接过这个服务器,可以跳过这条.
 
 ```shell
-git remote add origin git@github.com:michaelliao/learngit.git
+git remote add origin git@github.com:某某某/某项目名.git
 ```
 
 注意!!!后面那串github的地址并不是固定的,需要根据你在github上面的项目决定.
@@ -60,6 +58,64 @@ git push -u origin master
 
 ```shell
 git push
+```
+
+# 分支
+
+## 创建分支
+
+```shell
+git checkout -b 分支名
+```
+
+## 查看分支
+
+查看所有分支
+
+```shell
+git branch -a
+```
+
+查看远程所有分支
+
+```shell
+git branch -r 
+```
+
+## 切换分支
+
+```shell
+git checkout 目标分支
+```
+
+## 合并分支
+
+ 将目标分支与当前分支进行合并
+
+```shell
+git merge origin/目标分支
+```
+
+
+
+# 其他操作
+
+## 克隆远程仓库
+
+```shell
+git clone  "url"
+```
+
+## 查看工作区、暂存区的状态
+
+```shell
+git status
+```
+
+## 拉取远程库
+
+```shell
+git pull <别名> <分支名>
 ```
 
 
