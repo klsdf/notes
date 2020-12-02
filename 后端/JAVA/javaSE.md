@@ -2122,6 +2122,64 @@ public static void main(String[] args) {
 
 # 反射
 
+# 文件操作
+
+```java
+
+import java.io.*;
+import java.util.Scanner;
+
+public class 文件读写 {
+
+    public static void main(String args[]) {
+        
+        writeFile();
+        readFile();
+    }
+
+    /**
+     * 读入TXT文件
+     */
+    public static void readFile() {
+        String pathname = "src/data.txt"; // 绝对路径或相对路径都可以，写入文件时演示相对路径,读取以上路径的input.txt文件
+       try (FileReader reader = new FileReader(pathname);
+            BufferedReader br = new BufferedReader(reader);
+        ) {
+            String line;
+            if ((line = br.readLine()) != null) {
+                // 一次读入一行数据
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 写入TXT文件
+     */
+    public static void writeFile() {
+        try {
+            File writeName = new File("src/data.txt"); 
+            writeName.createNewFile(); // 创建新文件,有同名的文件的话直接覆盖
+            try (FileWriter writer = new FileWriter(writeName);
+                 BufferedWriter out = new BufferedWriter(writer)
+            ) {
+        		System.out.println("请输入英文字母！");
+            	Scanner input=new Scanner(System.in);
+            	String str= input.nextLine();
+                out.write("输入成功！"+str); 
+                out.flush(); // 把缓存区内容压入文件
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+
+
 # 可视化
 
 使用java swing

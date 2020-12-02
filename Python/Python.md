@@ -1,5 +1,9 @@
 # 基础
 
+## Python的运行
+
+Python源代码都是`.py`文件，在终端直接输入`python xxx.py`就可以调用python的解释器。
+
 ## 注释
 
 ```python

@@ -32,3 +32,21 @@ set-ExecutionPolicy RemoteSigned
 
 5. 按Y或A
 6. 重启
+
+# 联网相关
+
+## 路由器默认IP地址
+
+http://192.168.0.1/
+
+http://192.168.1.1/
+
+http://192.168.3.1/ ：华为
+
+
+
+## 天翼宽带家庭网关
+
+超级密码：nE7jA%5m
+
+## 无Internet，安全
